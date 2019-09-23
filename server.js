@@ -9,6 +9,7 @@ app.use(express.urlencoded({extended:true}));
 //中间件调用，下面这行代码，实现了给req加上一个cookies的属性，获取cookie数据
 app.use(cookieParser());
 //中间件使用静态资源托管设置
+//中间件默认有一个'/'，不写的时候就是这个
 
 app.use(express.static("public"));
 app.get('/',(req,res)=>{
@@ -50,6 +51,16 @@ app.get("/world/:name/:age",(req,res)=>{
     console.log(req.params);
     console.log(req.get("Accept"));
     res.send("hello world");
+});
+const myhello=(req,res,next)=>{
+    req.requestTime=new Date().getTime();
+    next();
+
+};
+app.use(myhello);
+app.get("/test",(req,res)=>{
+    console.log(req.requestTime);
+    res.send("test");
 })
 app.listen("3000");
 //设置响应头可以使用res.set()来实现跨域
