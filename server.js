@@ -6,11 +6,16 @@ const app=express();
 //中间件
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
+//中间件调用，下面这行代码，实现了给req加上一个cookies的属性，获取cookie数据
 app.use(cookieParser());
+//中间件使用静态资源托管设置
+
+app.use(express.static("public"));
 app.get('/',(req,res)=>{
     //req.query
-    console.log(req.query);
+     console.log(req.query);
+     //可以使用req.query.name或age
+
      res.send("hello express");
  
   
@@ -38,7 +43,7 @@ app.get("/getCookie",(req,res)=>{
 //localhost:3000/hello/banana
 app.get("/hello/:id",(req,res)=>{
 console.log(req.params);
-//{id:apple}
+//{id:apple}id为动态参数
 res.send("我来了吗");
 });
 app.get("/world/:name/:age",(req,res)=>{
@@ -47,3 +52,4 @@ app.get("/world/:name/:age",(req,res)=>{
     res.send("hello world");
 })
 app.listen("3000");
+//设置响应头可以使用res.set()来实现跨域
